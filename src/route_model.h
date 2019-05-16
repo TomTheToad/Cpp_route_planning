@@ -25,8 +25,15 @@ class RouteModel : public Model {
     // Add public RouteModel variables and methods here.
     RouteModel(const std::vector<std::byte> &xml);  
     std::vector<Node> path; // This variable will eventually store the path that is found by the A* search.
+    // Getter for m_Nodes
+  	// Returns a reference
+  	auto &SNodes() { return m_Nodes; }
+
 
   private:
     // Add private RouteModel variables and methods here.
+    // Private vector of nodes.
+  	// - Store all nodes from Open Street Map data
+    std::vector<Node> m_Nodes;
 
 };
