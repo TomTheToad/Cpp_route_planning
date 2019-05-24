@@ -17,19 +17,23 @@ class RouteModel : public Model {
       	float h_value = std::numeric_limits<float>::max();
       	float g_value = 0.0;
       	bool visited = false;
-      	std::vector<Node*> neighbors;
+      	std::vector<Node *> neighbors;
         
         Node(){}
         Node(int idx, RouteModel * search_model, Model::Node node) : Model::Node(node), parent_model(search_model), index(idx) {}
       
-        float Distance(Node node) const {
+        float distance(Node node) const {
             return std::sqrt(std::pow((x - node.x), 2) + std::pow((y - node.y), 2));
         }
+      
+      	void FindNeighbors();
       
       private:
         // Add private Node variables and methods here.
         int index;
         RouteModel * parent_model = nullptr;
+      	std::unordered_map<int, const Model::Road*> node_to_road;
+      	Node * FindNeighbor(std::vector<int> node_indices);
     };
     
     // Add public RouteModel variables and methods here.
@@ -38,15 +42,21 @@ class RouteModel : public Model {
   
   	// Getters
   	// Getter for m_Nodes
+  	auto &GetNodeToRoadHashmap() { return node_to_road; }
   	// Returns a reference
   	// &vector<Node> SNodes() { return &m_Nodes; }
   	auto &SNodes() { return m_Nodes; }
+  
+  	// chapter 16 method
+  	Node &FindClosestNode(float x, float y);
 
   private:
     // Add private RouteModel variables and methods here.
 	// Private vector of nodes.
+  	std::unordered_map<int, std::vector<const Model::Road*>> node_to_road;
   	// - Store all nodes from Open Street Map data
     std::vector<Node> m_Nodes;
+  	void CreateNodeToRoadHashmap();  	
 };
 
 #endif
